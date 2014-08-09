@@ -1,6 +1,7 @@
 package com.example.androidapp;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,32 +13,52 @@ public class MainActivity extends Activity {
 
 	private Button mButton;
 	private TextView mTextView;
-	
+	private PhotoResponse mPhotoResponse;
+
+	public class DataLoadingTask extends AsyncTask<Integer, Integer, Long> {
+
+		@Override
+		protected Long doInBackground(Integer... params) {
+			// TODO Auto-generated method stub
+			String jsonFileUrl = ConstsIgnore.API_URL + "&consumer_key=" + ConstsIgnore.CONSUMER_KEY;
+			mPhotoResponse = ObjectsReader
+					.readPhotoResponse(jsonFileUrl);
+			return null;
+		}
+
+		protected void onProgressUpdate(Integer... progress) {
+
+		}
+
+		protected void onPostExecute(Long result) {
+
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mButton = (Button) findViewById(R.id.button1);
 		mTextView = (TextView) findViewById(R.id.textView1);
-		
+
 		mButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				mTextView.setText("Button was clicked");
-				
-				
+
 			}
 		});
-		
-		
+		new DataLoadingTask().execute();
+
 	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
-	
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
