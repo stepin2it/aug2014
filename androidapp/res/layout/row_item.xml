@@ -18,6 +18,7 @@
         android:layout_height="wrap_content" 
         android:text="title"
         android:paddingTop="5dp"
+        android:paddingLeft="5dp"
         android:layout_toRightOf="@id/imageView1"
         />
 
@@ -26,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="description"
+        android:paddingLeft="5dp"
         android:layout_toRightOf="@id/imageView1"
         android:layout_below="@id/title"
          />
