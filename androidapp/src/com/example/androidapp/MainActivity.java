@@ -325,8 +325,13 @@ public class MainActivity extends FragmentActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+		Intent intent = null;
 		if (id == R.id.action_settings) {
-			Intent intent = new Intent(MainActivity.this, XmlParsingActivity.class);
+			intent = new Intent(MainActivity.this, XmlParsingActivity.class);
+			startActivity(intent);
+			return true;
+		} else if (id == R.id.action_database) {
+			intent = new Intent(MainActivity.this, DatabaseActivity.class);
 			startActivity(intent);
 			return true;
 		}
