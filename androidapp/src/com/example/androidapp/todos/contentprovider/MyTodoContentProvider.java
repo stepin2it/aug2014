@@ -1,3 +1,5 @@
+package com.example.androidapp.todos.contentprovider;
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -10,8 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-import com.stepin2it.android.todos.database.TodoDatabaseHelper;
-import com.stepin2it.android.todos.database.TodoTable;
+import com.example.androidapp.todos.contentprovider.TodoDatabaseHelper;
+import com.example.androidapp.todos.contentprovider.TodoTable;
 
 public class MyTodoContentProvider extends ContentProvider {
 
