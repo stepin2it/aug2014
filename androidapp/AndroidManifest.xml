@@ -29,9 +29,22 @@
         <activity android:name=".PhotoViewActivity" />
         <activity android:name=".XmlParsingActivity" />
         <activity android:name=".DatabaseActivity" />
+        <activity
+            android:name=".todos.contentprovider.TodosOverviewActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".todos.contentprovider.TodoDetailActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
 
         <provider
-            android:name=".MyTodoContentProvider"
+            android:name=".todos.contentprovider.MyTodoContentProvider"
             android:authorities="com.example.androidapp.todos.contentprovider" >
         </provider>
     </application>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.androidapp.todos.contentprovider.TodosOverviewActivity;
 import com.example.androidapp.utils.ImageCacheLoader;
 
 import android.app.Activity;
@@ -332,6 +333,10 @@ public class MainActivity extends FragmentActivity {
 			return true;
 		} else if (id == R.id.action_database) {
 			intent = new Intent(MainActivity.this, DatabaseActivity.class);
+			startActivity(intent);
+			return true;
+		} else if (id ==R.id.action_todo) {
+			intent = new Intent(MainActivity.this, TodosOverviewActivity.class);
 			startActivity(intent);
 			return true;
 		}

@@ -24,7 +24,7 @@ public class MyTodoContentProvider extends ContentProvider {
   private static final int TODOS = 10;
   private static final int TODO_ID = 20;
 
-  private static final String AUTHORITY = "com.stepin2it.android.todos.contentprovider";
+  private static final String AUTHORITY = "com.example.androidapp.todos.contentprovider";
 
   private static final String BASE_PATH = "todos";
   public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY

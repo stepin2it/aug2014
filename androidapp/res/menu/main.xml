@@ -10,5 +10,8 @@
     
     <item android:id="@+id/action_database"
         android:title="@string/label_database"/>
+    
+    <item android:id="@+id/action_todo"
+        android:title="@string/label_todo"/>
 
 </menu>
