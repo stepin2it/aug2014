@@ -2,6 +2,7 @@ package com.stepin2it.stepin2it.controllers;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,6 +42,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.stepin2it.stepin2it.androidlibrary.ConstsIgnore;
 import com.stepin2it.stepin2it.androidlibrary.ObjectsReader;
+import com.stepin2it.stepin2it.androidlibrary.Photo;
 import com.stepin2it.stepin2it.androidlibrary.PhotoResponse;
 import com.stepin2it.stepin2it.androidlibrary.Photos;
 import com.stepin2it.stepin2it.androidlibrary.utils.ImageCacheLoader;
@@ -69,6 +71,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	private FeedsBaseAdapter mFeedsAdapter;
 	private LinearLayout mFeedsContainer;
 	private StickyListHeadersListView mStickyList;
+	private ListView mListView;
 	private ActionBarHelper mActionBarHelper;
 
 	private SherlockActionBarDrawerToggle mDrawerToggle;
@@ -84,8 +87,8 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	ViewPager mPager;
 	PageIndicator mIndicator;
 	TitlePageIndicator mTitlePageIndicator;
-	private Photos mPhotos;
-	private ProgressBar mProgressBar;
+	private List<Photo> mPhotos = new ArrayList<Photo>();
+	private ProgressDialog mProgressBar;
 	private PhotoResponse mPhotoResponse;
 	private String mCategoryParam;
 	private ImageCacheLoader mImageCacheLoader;
@@ -100,9 +103,6 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			if (mProgressBar != null) {
-				mProgressBar.setVisibility(View.VISIBLE);
-			}
 
 		}
 
@@ -115,8 +115,12 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 					+ "&consumer_key="
 					+ ConstsIgnore.CONSUMER_KEY;
 			mPhotoResponse = ObjectsReader.readPhotoResponse(jsonFileUrl);
-			mPhotos = new Photos(mPhotoResponse.getPhotos());
-			mPhotos.setPhotos(mPhotoResponse.getPhotos());
+			if (mPhotoResponse != null) {
+				mPhotos = mPhotoResponse.getPhotos();
+			} else {
+				Log.e(TAG, "PhotoRespone object was null");
+			}
+
 			
 			return null;
 		}
@@ -131,13 +135,10 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		}
 	}
 	protected void display() {
-		if (mProgressBar != null) {
-			Log.d(TAG, "mProgressBar set to View.GONE");
-			mProgressBar.setVisibility(View.GONE);
-		}
+		
+		Log.d(TAG, "display was called");
 		return;
 	}
-	/*
 	public class MyCustomAdapter extends ArrayAdapter<Photo> {
 		public MyCustomAdapter(Context context, int textViewResourceId,
 				List<Photo> photolist) {
@@ -161,16 +162,16 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 			TextView description = (TextView) row
 					.findViewById(R.id.description);
 
-			title.setText(mPhotos.getPhotos().get(position).getName());
+			title.setText(mPhotos.get(position).getName());
 
-			description.setText(mPhotos.getPhotos().get(position)
+			description.setText(mPhotos.get(position)
 					.getDescription());
 
 			int i = 0;
 
 			ImageView imageView1 = (ImageView) row
 					.findViewById(R.id.imageView1);
-			mImageCacheLoader.DisplayImage(mPhotos.getPhotos().get(position)
+			mImageCacheLoader.DisplayImage(mPhotos.get(position)
 					.getImage_url(), imageView1);
 			// imageView1.setImageResource(R.drawable.ic_launcher);
 
@@ -178,7 +179,6 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 
 		}
 	}
-	*/
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -199,14 +199,15 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		View view = inflater.inflate(
 				R.layout.fragment_backportnavigationdrawer_layout, container,
 				false);
-		mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+		
 		
 		mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 		listView = (ListView) view.findViewById(R.id.left_drawer);
 		mContent = (TextView) view.findViewById(R.id.content_text);
 		mFeedsContainer = (LinearLayout) view.findViewById(R.id.feedsContainer);
-		mFeedsContainer.setVisibility(View.GONE);
-		mStickyList = (StickyListHeadersListView) view.findViewById(R.id.list);
+		// mFeedsContainer.setVisibility(View.GONE);
+		mListView = (ListView) view.findViewById(R.id.list);
+		/*
 		mStickyList.setOnItemClickListener(this);
 		mStickyList.setOnHeaderClickListener(this);
 
@@ -218,6 +219,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		mStickyList.setEmptyView(view.findViewById(R.id.empty));
 
 		mStickyList.setAdapter(mFeedsAdapter);
+		*/
 		mDrawerLayout.setDrawerListener(new DemoDrawerListener());
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
@@ -251,7 +253,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		
 		mTabsPager.setVisibility(View.VISIBLE);
 		mContent.setVisibility(View.GONE);
-		mFeedsContainer.setVisibility(View.GONE);
+		// mFeedsContainer.setVisibility(View.GONE);
 		mOneAdapter = new OneFragmentAdapter(
 				BackportNavigationDrawerFragment.this
 						.getSherlockActivity()
@@ -361,7 +363,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 				Log.d(TAG, "Position 1 was selected");
 				mTabsPager.setVisibility(View.VISIBLE);
 				mContent.setVisibility(View.GONE);
-				mFeedsContainer.setVisibility(View.GONE);
+				// mFeedsContainer.setVisibility(View.GONE);
 
 				// this is for tabspager
 
@@ -396,7 +398,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 				Log.d(TAG, "Position 2 was selected");
 				mTabsPager.setVisibility(View.VISIBLE);
 				mContent.setVisibility(View.GONE);
-				mFeedsContainer.setVisibility(View.GONE);
+				// mFeedsContainer.setVisibility(View.GONE);
 				mAchievementsAdapter = new AchievementsFragmentAdapter(
 						BackportNavigationDrawerFragment.this
 								.getSherlockActivity()
@@ -427,13 +429,12 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 				Log.d(TAG, "Position 3 was selected");
 				mContent.setVisibility(View.VISIBLE);
 				mTabsPager.setVisibility(View.GONE);
-				mFeedsContainer.setVisibility(View.GONE);
+				mFeedsContainer.setVisibility(View.VISIBLE);
 				new DataLoadingTask().execute();
-				/*
+				
 				MyCustomAdapter adapter = new MyCustomAdapter(mContext, R.layout.row_item,
-						mPhotos.getPhotos());
-				mStickyList.setAdapter(adapter);
-				*/
+						mPhotos);
+				mListView.setAdapter(adapter);
 			}
 				break;
 			case 4:
@@ -583,10 +584,12 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		 */
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
+			/*
 			mStickyList.smoothScrollToPositionFromTop(
 					mFeedsAdapter.getSectionStart(itemPosition)
 							+ mStickyList.getHeaderViewsCount(),
 					-mStickyList.getPaddingTop());
+					*/
 		}
 	}
 

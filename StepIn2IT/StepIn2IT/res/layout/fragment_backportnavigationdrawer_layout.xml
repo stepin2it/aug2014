@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <com.stepin2it.stepin2it.customviews.stickylistheaders.StickyListHeadersListView
+        <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -66,25 +66,7 @@
         android:layout_gravity="left"
         android:background="@android:color/white" />
 
-    <FrameLayout
-        android:id="@+id/progress_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone"
-                 />
-        </RelativeLayout>
-    </FrameLayout>
+   
 
 </android.support.v4.widget.DrawerLayout>

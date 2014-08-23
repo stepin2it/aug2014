@@ -7,15 +7,15 @@ import java.util.List;
 import android.content.Context;
 
 public class Photos implements Serializable{
-	private List<Photo> mPhotos = new ArrayList<Photo>();
-	public Photos(List<Photo> photos) {
+	private List<PhotoBak> mPhotos = new ArrayList<PhotoBak>();
+	public Photos(List<PhotoBak> photos) {
 		mPhotos = photos; 
 	}
-	public List<Photo> getPhotos() {
+	public List<PhotoBak> getPhotos() {
 		return mPhotos;
 	}
 
-	public void setPhotos(List<Photo> photos) {
+	public void setPhotos(List<PhotoBak> photos) {
 		this.mPhotos = photos;
 	}
 	

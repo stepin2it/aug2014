@@ -53,7 +53,7 @@ public class ObjectsReader
     	
     	Log.d(TAG, "--------------------------");
         
-        // responseObject = gson.fromJson(reader, listType);
+        responseObject = gson.fromJson(reader, listType);
         
         if(responseObject != null){
         	Log.d(TAG, "responseObject is NOT NULL");
