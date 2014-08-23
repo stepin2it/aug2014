@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.stepin2it.stepin2it.draggableviews.checkinstepone.DragLayer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:launcher="http://schemas.android.com/apk/res/com.android.launcher"
+    xmlns:app="http://schemas.android.com/apk/res/com.stepin2it.stepin2it"
+    android:id="@+id/drag_layer"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:weightSum="1.0" >
+
+            <com.stepin2it.stepin2it.customlayouts.CircleLayout
+                android:id="@+id/normal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:visibility="gone"
+                app:angleOffset="90" >
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="#00ff00" />
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="#0000ff" />
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="#ffff00" />
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="#ff00ff" />
+            </com.stepin2it.stepin2it.customlayouts.CircleLayout>
+
+            <LinearLayout
+                android:id="@+id/bottom_part"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="0.2"
+                android:orientation="horizontal"
+                android:weightSum="1.0" >
+
+                <Button
+                    android:id="@+id/button_add_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:onClick="onClickAddImage"
+                    android:text="Add image"
+                    android:visibility="gone" />
+
+                <com.stepin2it.stepin2it.draggableviews.checkinstepone.DeleteZone
+                    android:id="@+id/delete_zone_view"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/select_zone" />
+
+                <FrameLayout
+                    android:id="@+id/image_source_frame"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="0.5" >
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</com.stepin2it.stepin2it.draggableviews.checkinstepone.DragLayer>

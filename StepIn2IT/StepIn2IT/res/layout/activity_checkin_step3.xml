@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:launcher="http://schemas.android.com/apk/res/com.android.launcher"
+    xmlns:CustomView="http://schemas.android.com/apk/res/com.stepin2it.stepin2it"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tempo_blue"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/headerwelcometext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/checkinstep3_header_line1_text"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tempo_green"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/headertext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/checkinstep3_header_line2_text"
+                android:textColor="@color/tempo_dark_gray"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- <Button -->
+            <!-- android:id="@+id/buttonSkip" -->
+            <!-- android:layout_width="wrap_content" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_gravity="right" -->
+            <!-- android:background="@drawable/button_tempo_skip" /> -->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tempo_gray_50"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/headermessagetext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/checkin_header_standard_message"
+                android:textColor="@color/tempo_gray"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical" >
+
+            <com.stepin2it.stepin2it.controllers.checkinstep3.CustomSlider
+                android:id="@+id/slider_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                CustomView:max="50.0"
+                CustomView:min="0.0"
+                CustomView:orientation="vertical" >
+            </com.stepin2it.stepin2it.controllers.checkinstep3.CustomSlider>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/tempo_blue_80"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/buttonContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@drawable/button_tempo_continue" />
+    </FrameLayout>
+
+</RelativeLayout>

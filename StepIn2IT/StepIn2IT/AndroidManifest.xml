@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.stepin2it.stepin2it"
+    android:versionCode="1"
+    android:versionName="1.0.1" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="9" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo_3"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.stepin2it.stepin2it.SplashScreenActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.draggableviews.DragActivity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.ProfileActivityStep1"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.checkinstep1.CheckinStep1Activity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.checkinstep2.CheckinStep2Activity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.draggableviews.checkinstepone.CheckinStep1Activity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.checkinstep3.CheckinStep3Activity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.checkinstep4.CheckinStep4Activity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.checkinstep5.CheckinStep5Activity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.checkinstep6.CheckinStep6Activity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.two.SnapshotsActivity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.TabsActivity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.checkinstep1.ArcLayoutActivity"
+            android:theme="@style/Theme.Sherlock.Light" />
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.BackportNavigationDrawerActivity"
+            android:theme="@style/Theme.Sherlock.Light" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.controllers.HomeActivity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.MainActivity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.ProfileStep1Activity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.ProfileStep2Activity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.ProfileStep3Activity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.ProfileStep4Activity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.ProfileStep5Activity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.ProfileStep6Activity"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.HTML5Proto"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.GraphDebug"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+        <activity
+            android:name="com.stepin2it.stepin2it.ExpandableList1"
+            android:theme="@style/Theme.Sherlock.Light" >
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+
+ <head>
+
+
+ </head>
+
+ <body style="text-align:center">
+
+<input type="button" value="Get object across JSNI" onClick="showAndroidToast('Hello Tempo!')" />
+
+<input type="button" value="Reset" onClick="clearDiv()" />
+
+<br/>
+
+<input type="button" value="Get DeepDevice Info" onClick="showAndroidDeepDeviceInfo('Hello Tempo!')" />
+
+<br/>
+
+<input type="button" value="Fetch Large String" onClick="fetchLargeString()" />
+
+<script type="text/javascript">
+    function showAndroidToast(toast) {
+        Android.showToast(toast);
+          var div = document.getElementById("weatherbox");
+    	div.innerHTML = Android.fetchData();
+    }
+    
+    function showAndroidDeepDeviceInfo(toast)
+    {
+    var div = document.getElementById("weatherbox");
+    	div.innerHTML = Android.fetchDeepDeviceInfo();
+    }
+    
+    function clearDiv()
+    {
+    var div = document.getElementById("weatherbox");
+    div.innerHTML = "";
+    }
+    
+    
+    function fetchData() {
+        Android.fetchData();
+    }
+    
+     function fetchWeather() {
+        Android.fetchWeather();
+    }
+    
+    function fetchLargeString()
+    {
+    	var div = document.getElementById("weatherbox");
+    	div.innerHTML = Android.fetchLargeString();
+    	
+    }
+    
+    
+</script>
+
+
+<div id="weatherbox">Staticvalue</div>
+ </body>
+
+</html>
