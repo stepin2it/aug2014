@@ -147,7 +147,7 @@ public class FeedsBaseAdapter extends BaseAdapter implements
 		return feedsdummydata[position].subSequence(0, 1).charAt(0);
 	}
 
-	class HeaderViewHolder {
+	public class HeaderViewHolder {
 		TextView text1;
 	}
 

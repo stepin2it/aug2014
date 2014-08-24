@@ -26,10 +26,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,12 +51,12 @@ import com.stepin2it.stepin2it.androidlibrary.utils.ImageCacheLoader;
 import com.stepin2it.stepin2it.R;
 import com.sherlock.navigationdrawer.compat.SherlockActionBarDrawerToggle;
 import com.stepin2it.stepin2it.adapters.ViewPagerAdapter;
-import com.stepin2it.stepin2it.adapters.feeds.FeedsBaseAdapter;
 import com.stepin2it.stepin2it.controllers.achievements.AchievementsFragmentAdapter;
 import com.stepin2it.stepin2it.controllers.one.OneFragmentAdapter;
 import com.stepin2it.stepin2it.controllers.two.TwoFragmentAdapter;
 import com.stepin2it.stepin2it.controllers.two.TestFragment;
 import com.stepin2it.stepin2it.controllers.two.TestFragmentAdapter;
+import com.stepin2it.stepin2it.customviews.stickylistheaders.StickyListHeadersAdapter;
 import com.stepin2it.stepin2it.customviews.stickylistheaders.StickyListHeadersListView;
 import com.stepin2it.stepin2it.customviews.stickylistheaders.StickyListHeadersListView.OnHeaderClickListener;
 import com.viewpagerindicator.PageIndicator;
@@ -62,15 +64,13 @@ import com.viewpagerindicator.TitlePageIndicator;
 import com.viewpagerindicator.TitlePageIndicator.IndicatorStyle;
 
 public class BackportNavigationDrawerFragment extends SherlockFragment
-		implements AdapterView.OnItemClickListener, OnHeaderClickListener
-{
+		implements AdapterView.OnItemClickListener, OnHeaderClickListener {
 	private static final String TAG = "BackportNavigationDrawerFragment";
 	private DrawerLayout mDrawerLayout;
 	private ListView listView;
 	private TextView mContent;
-	private FeedsBaseAdapter mFeedsAdapter;
 	private LinearLayout mFeedsContainer;
-	private StickyListHeadersListView mStickyList;
+	private ListView mStickyList;
 	private ListView mListView;
 	private ActionBarHelper mActionBarHelper;
 
@@ -88,33 +88,35 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	PageIndicator mIndicator;
 	TitlePageIndicator mTitlePageIndicator;
 	private List<Photo> mPhotos = new ArrayList<Photo>();
-	private ProgressDialog mProgressBar;
+	private ProgressBar mProgressBar;
 	private PhotoResponse mPhotoResponse;
 	private String mCategoryParam;
 	private ImageCacheLoader mImageCacheLoader;
 	private Context mContext;
 	private boolean mIsPhotosDownloaded = false;
-	
-	public static Fragment newInstance()
-	{
+
+	public static Fragment newInstance() {
 		Fragment f = new BackportNavigationDrawerFragment();
 		return f;
 	}
+
 	public class DataLoadingTask extends AsyncTask<Integer, Integer, Long> {
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.VISIBLE);
+			}
 
 		}
 
 		@Override
 		protected Long doInBackground(Integer... params) {
 			// TODO Auto-generated method stub
-			
-			String jsonFileUrl = ConstsIgnore.API_URL 
-					+ "&feature=" + mCategoryParam 
-					+ "&consumer_key="
+
+			String jsonFileUrl = ConstsIgnore.API_URL + "&feature="
+					+ mCategoryParam + "&consumer_key="
 					+ ConstsIgnore.CONSUMER_KEY;
 			mPhotoResponse = ObjectsReader.readPhotoResponse(jsonFileUrl);
 			if (mPhotoResponse != null) {
@@ -123,7 +125,6 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 				Log.e(TAG, "PhotoRespone object was null");
 			}
 
-			
 			return null;
 		}
 
@@ -136,17 +137,23 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 
 		}
 	}
+
 	protected void display() {
-		
+
 		Log.d(TAG, "display was called");
-		
-		MyCustomAdapter adapter = new MyCustomAdapter(mContext, R.layout.row_item,
-				mPhotos);
+
+		MyCustomAdapter adapter = new MyCustomAdapter(mContext, R.layout.custom_feedscontainer_list_item_layout, mPhotos);
 		mStickyList.setAdapter(adapter);
-		
+
 		mIsPhotosDownloaded = true;
-		
+		if (mProgressBar != null) {
+			mProgressBar.setVisibility(View.GONE);
+		}
+
 	}
+
+
+
 	public class MyCustomAdapter extends ArrayAdapter<Photo> {
 		public MyCustomAdapter(Context context, int textViewResourceId,
 				List<Photo> photolist) {
@@ -160,8 +167,8 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 			View row = convertView;
 
 			if (row == null) {
-				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService
-					      (Context.LAYOUT_INFLATER_SERVICE);
+				LayoutInflater inflater = (LayoutInflater) getContext()
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				row = inflater.inflate(R.layout.row_item, parent, false);
 			}
 
@@ -172,61 +179,62 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 
 			title.setText(mPhotos.get(position).getName());
 
-			description.setText(mPhotos.get(position)
-					.getDescription());
+			description.setText(mPhotos.get(position).getDescription());
 
 			int i = 0;
 
 			ImageView imageView1 = (ImageView) row
 					.findViewById(R.id.imageView1);
-			mImageCacheLoader.DisplayImage(mPhotos.get(position)
-					.getImage_url(), imageView1);
+			mImageCacheLoader.DisplayImage(
+					mPhotos.get(position).getImage_url(), imageView1);
 			// imageView1.setImageResource(R.drawable.ic_launcher);
 
 			return row;
 
 		}
 	}
+
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		Log.d(this.getClass().getSimpleName(), "BackportNavigationDrawerFragment : onCreate");
+	public void onCreate(Bundle savedInstanceState) {
+		Log.d(this.getClass().getSimpleName(),
+				"BackportNavigationDrawerFragment : onCreate");
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
 		setHasOptionsMenu(true);
 		mContext = this.getActivity().getBaseContext();
 		mImageCacheLoader = new ImageCacheLoader(mContext);
 
-		
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState)
-	{
-		Log.d(this.getClass().getSimpleName(), "BackportNavigationDrawerFragment : onCreateView");
+			Bundle savedInstanceState) {
+		Log.d(this.getClass().getSimpleName(),
+				"BackportNavigationDrawerFragment : onCreateView");
 		View view = inflater.inflate(
 				R.layout.fragment_backportnavigationdrawer_layout, container,
 				false);
-		
-		
+
 		mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 		listView = (ListView) view.findViewById(R.id.left_drawer);
 		mContent = (TextView) view.findViewById(R.id.content_text);
+		mProgressBar = (ProgressBar) view.findViewById(R.id.progress_dialog);
+
 		mFeedsContainer = (LinearLayout) view.findViewById(R.id.feedsContainer);
 		// mFeedsContainer.setVisibility(View.GONE);
-		mStickyList = (StickyListHeadersListView) view.findViewById(R.id.list);
+		mStickyList = (ListView) view.findViewById(R.id.list);
+		/*
 		mStickyList.setOnItemClickListener(this);
+		
 		mStickyList.setOnHeaderClickListener(this);
 
 		mStickyList.addHeaderView(inflater.inflate(
 				R.layout.feedscontainer_list_header_one, null));
 		mStickyList.addFooterView(inflater.inflate(
 				R.layout.feedscontainer_list_footer_one, null));
-		mFeedsAdapter = new FeedsBaseAdapter(this.getActivity());
 		mStickyList.setEmptyView(view.findViewById(R.id.empty));
-
-		mStickyList.setAdapter(mFeedsAdapter);
+		*/
+		// TODO mStickyList.setAdapter(mFeedsAdapter);
 		mDrawerLayout.setDrawerListener(new DemoDrawerListener());
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
@@ -256,14 +264,12 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		mPager = (ViewPager) view.findViewById(R.id.pager);
 		mTitlePageIndicator = (TitlePageIndicator) view
 				.findViewById(R.id.indicator);
-		
-		
+
 		mTabsPager.setVisibility(View.VISIBLE);
 		mContent.setVisibility(View.GONE);
 		mFeedsContainer.setVisibility(View.VISIBLE);
 		mOneAdapter = new OneFragmentAdapter(
-				BackportNavigationDrawerFragment.this
-						.getSherlockActivity()
+				BackportNavigationDrawerFragment.this.getSherlockActivity()
 						.getSupportFragmentManager());
 
 		mPager.setAdapter(mOneAdapter);
@@ -275,21 +281,19 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		mTitlePageIndicator.setFooterColor(0xFF474F4E);
 		mTitlePageIndicator.setFooterLineHeight(1 * density); // 1dp
 		mTitlePageIndicator.setFooterIndicatorHeight(3 * density); // 3dp
-		mTitlePageIndicator
-				.setFooterIndicatorStyle(IndicatorStyle.None);
+		mTitlePageIndicator.setFooterIndicatorStyle(IndicatorStyle.None);
 		mTitlePageIndicator.setTextColor(0xAA000000);
 		mTitlePageIndicator.setSelectedColor(0xFF000000);
 		mTitlePageIndicator.setSelectedBold(true);
 		mContent.setVisibility(View.GONE);
 		mTabsPager.setVisibility(View.GONE);
 		mFeedsContainer.setVisibility(View.VISIBLE);
-
+		new DataLoadingTask().execute();
 		return view;
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-	{
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater = ((SherlockFragmentActivity) getActivity())
 				.getSupportMenuInflater();
 		inflater.inflate(R.menu.main, menu);
@@ -297,22 +301,19 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		/*
 		 * The action bar home/up action should open or close the drawer.
 		 * mDrawerToggle will take care of this.
 		 */
-		if (mDrawerToggle.onOptionsItemSelected(item))
-		{
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
-	public void onConfigurationChanged(Configuration newConfig)
-	{
+	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
@@ -323,27 +324,23 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	 * is made.
 	 */
 	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener
-	{
+			ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id)
-		{
+				long id) {
 			mContent.setText(DebugData.DEBUGDATA[position]);
 
-			switch (position)
-			{
-			case 0:
-			{
+			switch (position) {
+			case 0: {
 				Log.d(TAG, "Position 0 was selected");
 				/*
+				 * mTabsPager.setVisibility(View.GONE);
+				 * mContent.setVisibility(View.GONE);
+				 * mFeedsContainer.setVisibility(View.VISIBLE);
+				 */
 				mTabsPager.setVisibility(View.GONE);
 				mContent.setVisibility(View.GONE);
 				mFeedsContainer.setVisibility(View.VISIBLE);
-				*/
-				mTabsPager.setVisibility(View.VISIBLE);
-				mContent.setVisibility(View.GONE);
-				// mFeedsContainer.setVisibility(View.GONE);
 				mOneAdapter = new OneFragmentAdapter(
 						BackportNavigationDrawerFragment.this
 								.getSherlockActivity()
@@ -367,12 +364,11 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 
 				break;
 
-			case 1:
-			{
+			case 1: {
 				Log.d(TAG, "Position 1 was selected");
 				mTabsPager.setVisibility(View.VISIBLE);
 				mContent.setVisibility(View.GONE);
-				// mFeedsContainer.setVisibility(View.GONE);
+				mFeedsContainer.setVisibility(View.GONE);
 
 				// this is for tabspager
 
@@ -402,8 +398,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 
 				break;
 
-			case 2:
-			{
+			case 2: {
 				Log.d(TAG, "Position 2 was selected");
 				mTabsPager.setVisibility(View.VISIBLE);
 				mContent.setVisibility(View.GONE);
@@ -433,37 +428,32 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 				mTitlePageIndicator.setSelectedBold(true);
 			}
 				break;
-			case 3:
-			{
+			case 3: {
 				Log.d(TAG, "Position 3 was selected");
 				mContent.setVisibility(View.GONE);
 				mTabsPager.setVisibility(View.GONE);
 				mFeedsContainer.setVisibility(View.VISIBLE);
+				/*
+				 * if (!mIsPhotosDownloaded) { new DataLoadingTask().execute();
+				 * 
+				 * }
+				 */
 
-				if (!mIsPhotosDownloaded) {
-					new DataLoadingTask().execute();
-					
-				}
-				
-				
 			}
 				break;
-			case 4:
-			{
+			case 4: {
 				mContent.setVisibility(View.VISIBLE);
 				mTabsPager.setVisibility(View.GONE);
 				mFeedsContainer.setVisibility(View.GONE);
 			}
 				break;
-			case 5:
-			{
+			case 5: {
 				mContent.setVisibility(View.VISIBLE);
 				mTabsPager.setVisibility(View.GONE);
 				mFeedsContainer.setVisibility(View.GONE);
 			}
 				break;
-			case 6:
-			{
+			case 6: {
 				mContent.setVisibility(View.VISIBLE);
 				mTabsPager.setVisibility(View.GONE);
 				mFeedsContainer.setVisibility(View.GONE);
@@ -491,31 +481,26 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	 * should be forwarded if the ActionBarDrawerToggle is not used as the
 	 * DrawerLayout listener directly.
 	 */
-	private class DemoDrawerListener implements DrawerLayout.DrawerListener
-	{
+	private class DemoDrawerListener implements DrawerLayout.DrawerListener {
 		@Override
-		public void onDrawerOpened(View drawerView)
-		{
+		public void onDrawerOpened(View drawerView) {
 			mDrawerToggle.onDrawerOpened(drawerView);
 			mActionBarHelper.onDrawerOpened();
 		}
 
 		@Override
-		public void onDrawerClosed(View drawerView)
-		{
+		public void onDrawerClosed(View drawerView) {
 			mDrawerToggle.onDrawerClosed(drawerView);
 			mActionBarHelper.onDrawerClosed();
 		}
 
 		@Override
-		public void onDrawerSlide(View drawerView, float slideOffset)
-		{
+		public void onDrawerSlide(View drawerView, float slideOffset) {
 			mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
 		}
 
 		@Override
-		public void onDrawerStateChanged(int newState)
-		{
+		public void onDrawerStateChanged(int newState) {
 			mDrawerToggle.onDrawerStateChanged(newState);
 		}
 	}
@@ -524,25 +509,21 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	 * Create a compatible helper that will manipulate the action bar if
 	 * available.
 	 */
-	private ActionBarHelper createActionBarHelper()
-	{
+	private ActionBarHelper createActionBarHelper() {
 		return new ActionBarHelper();
 	}
 
-	private class ActionBarHelper
-	{
+	private class ActionBarHelper {
 		private final ActionBar mActionBar;
 		private CharSequence mDrawerTitle;
 		private CharSequence mTitle;
 
-		private ActionBarHelper()
-		{
+		private ActionBarHelper() {
 			mActionBar = ((SherlockFragmentActivity) getActivity())
 					.getSupportActionBar();
 		}
 
-		public void init()
-		{
+		public void init() {
 			mActionBar.setDisplayHomeAsUpEnabled(true);
 			mActionBar.setHomeButtonEnabled(true);
 			mTitle = mDrawerTitle = getActivity().getTitle();
@@ -552,8 +533,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		 * When the drawer is closed we restore the action bar state reflecting
 		 * the specific contents in view.
 		 */
-		public void onDrawerClosed()
-		{
+		public void onDrawerClosed() {
 			mActionBar.setTitle(mTitle);
 		}
 
@@ -563,21 +543,18 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		 * nav hierarchy represented by the drawer, as the rest of your content
 		 * will be dimmed down and non-interactive.
 		 */
-		public void onDrawerOpened()
-		{
+		public void onDrawerOpened() {
 			mActionBar.setTitle(mDrawerTitle);
 		}
 
-		public void setTitle(CharSequence title)
-		{
+		public void setTitle(CharSequence title) {
 			mTitle = title;
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id)
-	{
+			long id) {
 		/*
 		 * Toast.makeText(getActivity(), "Item " + position + " clicked!",
 		 * LENGTH_SHORT).show();
@@ -587,20 +564,17 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	@SuppressLint("NewApi")
 	@Override
 	public void onHeaderClick(StickyListHeadersListView l, View header,
-			int itemPosition, long headerId, boolean currentlySticky)
-	{
+			int itemPosition, long headerId, boolean currentlySticky) {
 		/*
 		 * Toast.makeText(getActivity(), "header " + headerId,
 		 * Toast.LENGTH_SHORT) .show();
 		 */
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			/*
-			mStickyList.smoothScrollToPositionFromTop(
-					mFeedsAdapter.getSectionStart(itemPosition)
-							+ mStickyList.getHeaderViewsCount(),
-					-mStickyList.getPaddingTop());
-					*/
+			 * mStickyList.smoothScrollToPositionFromTop(
+			 * mFeedsAdapter.getSectionStart(itemPosition) +
+			 * mStickyList.getHeaderViewsCount(), -mStickyList.getPaddingTop());
+			 */
 		}
 	}
 
