@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 
 import android.os.AsyncTask;
@@ -17,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -49,6 +53,7 @@ import com.stepin2it.stepin2it.androidlibrary.PhotoResponse;
 import com.stepin2it.stepin2it.androidlibrary.Photos;
 import com.stepin2it.stepin2it.androidlibrary.utils.ImageCacheLoader;
 import com.stepin2it.stepin2it.R;
+import com.stepin2it.stepin2it.SplashScreenActivity;
 import com.sherlock.navigationdrawer.compat.SherlockActionBarDrawerToggle;
 import com.stepin2it.stepin2it.adapters.ViewPagerAdapter;
 import com.stepin2it.stepin2it.controllers.achievements.AchievementsFragmentAdapter;
@@ -150,6 +155,32 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 			mProgressBar.setVisibility(View.GONE);
 		}
 
+		NotificationCompat.Builder mBuilder =
+			    new NotificationCompat.Builder(mContext)
+			    .setSmallIcon(R.drawable.ic_launcher)
+			    .setContentTitle("My notification")
+			    .setContentText("Hello World!");
+		Intent resultIntent = new Intent(mContext, SplashScreenActivity.class);
+		
+		// Because clicking the notification opens a new ("special") activity, there's
+		// no need to create an artificial back stack.
+		PendingIntent resultPendingIntent =
+		    PendingIntent.getActivity(
+		    mContext,
+		    0,
+		    resultIntent,
+		    PendingIntent.FLAG_UPDATE_CURRENT
+		);
+		
+		mBuilder.setContentIntent(resultPendingIntent);
+		
+		// Sets an ID for the notification
+		int mNotificationId = 1;
+		// Gets an instance of the NotificationManager service
+		NotificationManager mNotifyMgr = 
+		        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+		// Builds the notification and issues it.
+		mNotifyMgr.notify(mNotificationId, mBuilder.build());
 	}
 
 
