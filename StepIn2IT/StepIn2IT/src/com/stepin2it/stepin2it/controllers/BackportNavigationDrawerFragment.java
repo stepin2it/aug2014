@@ -93,6 +93,8 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	private String mCategoryParam;
 	private ImageCacheLoader mImageCacheLoader;
 	private Context mContext;
+	private boolean mIsPhotosDownloaded = false;
+	
 	public static Fragment newInstance()
 	{
 		Fragment f = new BackportNavigationDrawerFragment();
@@ -137,7 +139,13 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 	protected void display() {
 		
 		Log.d(TAG, "display was called");
-		return;
+		
+		MyCustomAdapter adapter = new MyCustomAdapter(mContext, R.layout.row_item,
+				mPhotos);
+		mStickyList.setAdapter(adapter);
+		
+		mIsPhotosDownloaded = true;
+		
 	}
 	public class MyCustomAdapter extends ArrayAdapter<Photo> {
 		public MyCustomAdapter(Context context, int textViewResourceId,
@@ -187,7 +195,8 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		setRetainInstance(true);
 		setHasOptionsMenu(true);
 		mContext = this.getActivity().getBaseContext();
-		// mImageCacheLoader = new ImageCacheLoader(mContext);
+		mImageCacheLoader = new ImageCacheLoader(mContext);
+
 		
 	}
 
@@ -206,8 +215,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		mContent = (TextView) view.findViewById(R.id.content_text);
 		mFeedsContainer = (LinearLayout) view.findViewById(R.id.feedsContainer);
 		// mFeedsContainer.setVisibility(View.GONE);
-		mListView = (ListView) view.findViewById(R.id.list);
-		/*
+		mStickyList = (StickyListHeadersListView) view.findViewById(R.id.list);
 		mStickyList.setOnItemClickListener(this);
 		mStickyList.setOnHeaderClickListener(this);
 
@@ -219,7 +227,6 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		mStickyList.setEmptyView(view.findViewById(R.id.empty));
 
 		mStickyList.setAdapter(mFeedsAdapter);
-		*/
 		mDrawerLayout.setDrawerListener(new DemoDrawerListener());
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
@@ -253,7 +260,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		
 		mTabsPager.setVisibility(View.VISIBLE);
 		mContent.setVisibility(View.GONE);
-		// mFeedsContainer.setVisibility(View.GONE);
+		mFeedsContainer.setVisibility(View.VISIBLE);
 		mOneAdapter = new OneFragmentAdapter(
 				BackportNavigationDrawerFragment.this
 						.getSherlockActivity()
@@ -273,8 +280,10 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 		mTitlePageIndicator.setTextColor(0xAA000000);
 		mTitlePageIndicator.setSelectedColor(0xFF000000);
 		mTitlePageIndicator.setSelectedBold(true);
+		mContent.setVisibility(View.GONE);
+		mTabsPager.setVisibility(View.GONE);
+		mFeedsContainer.setVisibility(View.VISIBLE);
 
-		
 		return view;
 	}
 
@@ -334,7 +343,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 				*/
 				mTabsPager.setVisibility(View.VISIBLE);
 				mContent.setVisibility(View.GONE);
-				mFeedsContainer.setVisibility(View.GONE);
+				// mFeedsContainer.setVisibility(View.GONE);
 				mOneAdapter = new OneFragmentAdapter(
 						BackportNavigationDrawerFragment.this
 								.getSherlockActivity()
@@ -398,7 +407,7 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 				Log.d(TAG, "Position 2 was selected");
 				mTabsPager.setVisibility(View.VISIBLE);
 				mContent.setVisibility(View.GONE);
-				// mFeedsContainer.setVisibility(View.GONE);
+				mFeedsContainer.setVisibility(View.GONE);
 				mAchievementsAdapter = new AchievementsFragmentAdapter(
 						BackportNavigationDrawerFragment.this
 								.getSherlockActivity()
@@ -427,14 +436,16 @@ public class BackportNavigationDrawerFragment extends SherlockFragment
 			case 3:
 			{
 				Log.d(TAG, "Position 3 was selected");
-				mContent.setVisibility(View.VISIBLE);
+				mContent.setVisibility(View.GONE);
 				mTabsPager.setVisibility(View.GONE);
 				mFeedsContainer.setVisibility(View.VISIBLE);
-				new DataLoadingTask().execute();
+
+				if (!mIsPhotosDownloaded) {
+					new DataLoadingTask().execute();
+					
+				}
 				
-				MyCustomAdapter adapter = new MyCustomAdapter(mContext, R.layout.row_item,
-						mPhotos);
-				mListView.setAdapter(adapter);
+				
 			}
 				break;
 			case 4:
